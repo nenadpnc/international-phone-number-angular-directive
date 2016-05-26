@@ -1,0 +1,239 @@
+// rgba is needed for the selected flag hover state to blend in with
+// the border-highlighting some browsers give the input on focus
+$hoverColor: #eaeaea !default
+$greyText: #999 !default
+$greyBorder: #CCC !default
+
+$flagHeight: 15px !default
+$flagWidth: 20px !default
+$flagPadding: 8px !default
+$borderWidth: 1px !default
+
+$arrowHeight: 4px !default
+$arrowWidth: 6px !default
+$triangleBorder: 3px !default
+$arrowPadding: 6px !default
+$arrowColor: #555 !default
+
+$inputPadding: 6px !default
+$selectedFlagWidth: $flagWidth + (2 * $flagPadding) !default
+$selectedFlagArrowWidth: $flagWidth + $flagPadding + $arrowWidth + (2 * $arrowPadding) !default
+$selectedFlagArrowDialCodeWidth: $selectedFlagArrowWidth + $flagPadding !default
+
+// image related variables
+$flagsImagePath: "../images/" !default
+$flagsImageName: "flags_phone" !default
+$flagsImageExtension: "png" !default
+
+.intl-tel-input
+  position: relative
+  display: inline-block
+  width: 100%
+
+  .hide
+    display: none
+
+  // need this during init, to get the height of the dropdown
+  .v-hide
+    visibility: hidden
+
+
+  .international-phone
+    width: 80%
+
+  input, input[type=text], input[type=tel] 
+    position: relative
+    z-index: 0
+    margin-top: 0 !important
+    margin-bottom: 0 !important
+    padding-right: 85px
+    margin-right: 0
+
+  &.allow-dropdown
+    input[type=text].ext
+      width: 19%
+      margin-left: 1%
+      padding: 5px
+
+  .flag-container
+    position: absolute
+    top: 0
+    height: 40px
+    right: 0
+    padding: 1px
+
+  .selected-flag
+    z-index: 1
+    position: relative
+    width: 76px
+    height: 100%
+    padding: 0 0 0 8px
+
+    .iti-flag 
+      position: absolute
+      top: 0
+      bottom: 0
+      margin: auto
+
+    .iti-arrow
+      position: absolute
+      top: 50%
+      margin-top: -2px
+      left: 32px
+      width: 0
+      height: 0
+      border-left: 3px solid transparent
+      border-right: 3px solid transparent
+      border-top: 4px solid $arrowColor
+
+      &.up
+        border-top: none
+        border-bottom: 4px solid $arrowColor
+
+    .iti-dial-code
+      font-size: 14px
+      font-size: 0.875rem
+      position: absolute
+      line-height: 1
+      padding: 13px 0
+      right: 2px
+      width: 42px
+      text-align: center
+
+
+  // the dropdown
+  .country-list 
+    position: absolute
+    z-index: 2
+    list-style: none
+    text-align: left
+
+    &.dropup 
+      bottom: 100%
+      margin-bottom: -1px
+
+    .flag-box 
+      display: inline-block
+      width: 20px
+  
+
+    padding: 0
+    margin: 0 0 0 -1px
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.2)
+    background-color: white
+    border: 1px solid $greyBorder
+    white-space: nowrap
+
+    @media (max-width: 500px) 
+      white-space: normal
+      min-width: 250px
+      font-size: $base-font-size - 4
+
+    max-height: 200px
+    overflow-y: scroll
+    .divider 
+      padding-bottom: 5px
+      margin-bottom: 5px
+      border-bottom: 1px solid $greyBorder
+
+    .country
+      padding: 5px 10px
+      border-left: 2px solid $cl-white
+      border-bottom: 1px solid $cl-border-color
+      .dial-code 
+        color: $greyText
+
+    .country.highlight, .country.selected
+      background-color: $cl-background-app
+      border-right: 2px solid $cl-background-app
+      border-left: 2px solid $cl-green
+      color: $cl-green
+
+    // spacing between country flag, name and dial code
+    .flag-box, .country-name, .dial-code 
+      vertical-align: middle
+  
+    .flag-box, .country-name 
+      margin-right: 6px
+
+  &.allow-dropdown 
+    input, input[type=text], input[type=tel] 
+      padding-right: $inputPadding
+      padding-left: 85px
+      margin-left: 0
+  
+    .flag-container 
+      right: auto
+      left: 0
+  
+    .selected-flag 
+      width: 76px
+
+    .flag-container:hover 
+      cursor: pointer
+      .selected-flag 
+        background-color: $hoverColor
+
+    &.separate-dial-code 
+      .selected-flag
+        background-color: $hoverColor
+        display: table
+    
+      .selected-dial-code
+        display: table-cell
+        vertical-align: middle
+        padding-left: 28px
+
+      $charLength: 8px
+      @for $i from 2 through 5 
+        &.iti-sdc-#{$i}
+          input, input[type=text], input[type=tel] 
+            padding-left: $selectedFlagArrowDialCodeWidth + $inputPadding + ($i * $charLength)
+        
+          .selected-flag 
+            width: $selectedFlagArrowDialCodeWidth + ($i * $charLength)
+
+  &.iti-container 
+    position: absolute
+    top: -1000px
+    left: -1000px
+    z-index: 1060
+    padding: 1px
+    &:hover 
+      cursor: pointer
+
+.iti-mobile .intl-tel-input 
+  &.iti-container 
+    top: 30px
+    bottom: 30px
+    left: 30px
+    right: 30px
+    position: fixed
+
+  .country-list 
+    max-height: 100%
+    width: 100%
+    .country 
+      padding: 10px 10px
+      line-height: 1.5em
+
+
+@import "countrySprite"
+
+.iti-flag 
+  width: 20px
+  height: 15px
+  box-shadow: 0 0 1px 0 #888
+  background-image: url("#{$flagsImagePath}#{$flagsImageName}.#{$flagsImageExtension}")
+  background-repeat: no-repeat
+  // empty state
+  background-color: #DBDBDB
+  background-position: 20px 0
+
+  @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) 
+    background-image: url("#{$flagsImagePath}#{$flagsImageName}@2x.#{$flagsImageExtension}")
+
+
+// hack for Nepal which is the only flag that is not square/rectangle, so it has transparency, so you can see the default grey behind it
+.iti-flag.np 
+  background-color: transparent
